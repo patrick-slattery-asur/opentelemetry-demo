@@ -799,8 +799,8 @@ services:
     command: [ "--config=/etc/otelcol-config.yml", "--config=/etc/otelcol-config-extras.yml" ]
     user: 0:0
     volumes:
-      - ${HOST_FILESYSTEM}:/hostfs:ro:Z
-      - ${DOCKER_SOCK}:/var/run/docker.sock:ro:Z
+      - ${HOST_FILESYSTEM}:/hostfs:ro,Z
+      - ${DOCKER_SOCK}:/var/run/docker.sock:ro,Z
       - ${OTEL_COLLECTOR_CONFIG}:/etc/otelcol-config.yml:Z
       - ${OTEL_COLLECTOR_CONFIG_EXTRAS}:/etc/otelcol-config-extras.yml:Z
     ports:
