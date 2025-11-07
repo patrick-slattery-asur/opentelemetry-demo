@@ -503,7 +503,7 @@ services:
       - OTEL_RESOURCE_ATTRIBUTES
       - OTEL_SERVICE_NAME=product-catalog
     volumes:
-      - ./src/product-catalog/products:/usr/src/app/products
+      - ./src/product-catalog/products:/usr/src/app/products:Z
     depends_on:
       otel-collector:
         condition: service_started
@@ -633,9 +633,9 @@ services:
       - "${FLAGD_PORT}"
       - "${FLAGD_OFREP_PORT}"
     volumes:
-      - ./src/flagd:/etc/flagd
     logging:
       *logging
+      - ./src/flagd:/etc/flagd:Z
 
   # Flagd UI for configuring the feature flag service
   flagd-ui:
@@ -667,7 +667,7 @@ services:
       flagd:
         condition: service_started
     volumes:
-      - ./src/flagd:/app/data
+      - ./src/flagd:/app/data:Z
 
   # Kafka used by Checkout, Accounting, and Fraud Detection services
   kafka:
@@ -766,7 +766,7 @@ services:
       - OTEL_COLLECTOR_PORT_HTTP
       - MEMORY_MAX_TRACES=25000
     volumes:
-      - ./src/jaeger/config.yml:/etc/jaeger/config.yml
+      - ./src/jaeger/config.yml:/etc/jaeger/config.yml:Z
     logging: *logging
 
   # Grafana
@@ -781,8 +781,8 @@ services:
     environment:
       - "GF_INSTALL_PLUGINS=grafana-opensearch-datasource"
     volumes:
-      - ./src/grafana/grafana.ini:/etc/grafana/grafana.ini
-      - ./src/grafana/provisioning/:/etc/grafana/provisioning/
+      - ./src/grafana/grafana.ini:/etc/grafana/grafana.ini:Z
+      - ./src/grafana/provisioning/:/etc/grafana/provisioning/:Z
     ports:
       - "${GRAFANA_PORT}"
     logging: *logging
@@ -799,10 +799,10 @@ services:
     command: [ "--config=/etc/otelcol-config.yml", "--config=/etc/otelcol-config-extras.yml" ]
     user: 0:0
     volumes:
-      - ${HOST_FILESYSTEM}:/hostfs:ro
-      - ${DOCKER_SOCK}:/var/run/docker.sock:ro
-      - ${OTEL_COLLECTOR_CONFIG}:/etc/otelcol-config.yml
-      - ${OTEL_COLLECTOR_CONFIG_EXTRAS}:/etc/otelcol-config-extras.yml
+      - ${HOST_FILESYSTEM}:/hostfs:ro:Z
+      - ${DOCKER_SOCK}:/var/run/docker.sock:ro:Z
+      - ${OTEL_COLLECTOR_CONFIG}:/etc/otelcol-config.yml:Z
+      - ${OTEL_COLLECTOR_CONFIG_EXTRAS}:/etc/otelcol-config-extras.yml:Z
     ports:
       - "${OTEL_COLLECTOR_PORT_GRPC}"
       - "${OTEL_COLLECTOR_PORT_HTTP}"
@@ -840,7 +840,7 @@ services:
       - --web.enable-otlp-receiver
       - --enable-feature=exemplar-storage
     volumes:
-      - ./src/prometheus/prometheus-config.yaml:/etc/prometheus/prometheus-config.yaml
+      - ./src/prometheus/prometheus-config.yaml:/etc/prometheus/prometheus-config.yaml:Z
     deploy:
       resources:
         limits:
